@@ -166,11 +166,10 @@ reading list entry is also removed."
                                (string-equal target
                                              (cdr x)))
                              relations))))
+    (orgability-brain-delete-relation id (orgability--unwrap-link link))
     (orgability--with-entry
      (orgability-goto-relations-block)
-     (orgability--remove-till (concat "^.*" link ".*$") ":END:"))
-    (orgability-brain-delete-relation id
-                                      (orgability--unwrap-link link))))
+     (orgability--remove-till (concat "^.*" link ".*$") ":END:"))))
 
 (defun orgability--has-relation (link)
   "Returns non-nil if entry at point has a relation with LINK."
