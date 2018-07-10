@@ -144,10 +144,10 @@ directories.")
   (let* ((entry (orgability-brain-choose-entry))
          (link (orgability-brain-get-link entry)))
     (unless (orgability--has-relation link)
-      (orgability--add-relation (orgability-brain-get-link entry)
-                                (org-brain-title entry))
-      (orgability-brain-add-relation (org-id-get-create)
-                                     entry))))
+      (orgability--with-entry
+       (orgability-brain-add-relation (org-id-get-create) entry)
+       (orgability--add-relation (orgability-brain-get-link entry)
+                                 (org-brain-title entry))))))
 
 ;;;###autoload
 (defun orgability-delete-relation ()

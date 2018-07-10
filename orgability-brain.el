@@ -31,7 +31,7 @@
 
 (defun orgability-brain-add-relation (orgability-id brain-entry)
   "Add relation from BRAIN-ENTRY to ORGABILITY-ID"
-  (org-brain-add-resource (concat "id:" (org-id-get-create))
+  (org-brain-add-resource (concat "id:" orgability-id)
                           (org-entry-get nil "ITEM")
                           nil
                           brain-entry))
