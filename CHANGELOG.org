@@ -1,6 +1,8 @@
 * Unreleased
 - New =org-agenda= helper for inserting relations list into agenda -
   =orgability-agenda-format-relations=.
+- Fix =orgability-add-relation= when used from agenda.
+- Automatically redo =org-agenda= after relations manipulations.
 
 * ~v0.1.0~
 Initial release.
