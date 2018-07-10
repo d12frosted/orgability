@@ -34,15 +34,17 @@ this package in your =init.el= file:
   remove relations from =orgability-file=.
 
 *** Viewing reading list
-Currently, =orgability= doesn't expose any functionality to nicely view all your
-reading list (with relations). It is planned for future versions.
-
-Meanwhile, you can setup =org-agenda= for this.
+Currently, =orgability= doesn't expose any special functionality to view all
+your reading list, but you can use =org-agenda= for this purpose. There is a
+function =orgability-agenda-format-relations= that can be used in
+=org-agenda-prefix-format= to insert relations.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-custom-commands
-        `(("r" "Reading List" tags "READING"
-           ((org-agenda-overriding-header "Reading List")))))
+  ("r" "Reading List" tags-todo "READING"
+   ((org-agenda-overriding-header "Reading List")
+    (org-agenda-remove-tags t)
+    (org-agenda-prefix-format '((tags . "%(orgability-agenda-format-relations)")))
+    (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
 #+END_SRC
 
 *** Configurations
@@ -67,6 +69,8 @@ Meanwhile, you can setup =org-agenda= for this.
   By default it's =org-cliplink-retrieve-title-synchronously= from a
   =org-cliplink= package. This variable allows you to choose your own
   implementation.
+- =orgability-agenda-relations-column=: Width of relations block in
+  =org-agenda=.
 
 ** Special thanks
 Special thanks to creators and maintainers of =org-mode=, =org-cliplink=,

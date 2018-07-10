@@ -217,16 +217,32 @@ reading list entry is also removed."
    (let* ((data-raw (buffer-substring (point) (search-forward ":END:")))
           (data (with-temp-buffer
                   (insert data-raw)
-                  (org-element-parse-buffer)))
-          (links
-           (delete-dups
-            (org-element-map data 'link
-              (lambda (link)
-                (cons (org-element-property :raw-link link)
-                      (when-let ((desc (car (org-element-contents link))))
-                        (replace-regexp-in-string "[ \t\n\r]+" " " desc))))
-              nil nil t))))
-     links)))
+                  (org-element-parse-buffer))))
+     (delete-dups
+      (org-element-map data 'link
+        (lambda (link)
+          (cons (org-element-property :raw-link link)
+                (when-let ((desc (car (org-element-contents link))))
+                  (substring-no-properties (replace-regexp-in-string "[ \t\n\r]+" " " desc))
+                  )))
+        nil nil t)))))
+
+(defvar orgability-agenda-relations-column 24
+  "Width of relations block in `org-agenda'.")
+
+(defun orgability-agenda-list-relations ()
+  "Returns string with relations to be inserted to `org-agenda'."
+  (let* ((relations (orgability-list-relations))
+         (cl orgability-agenda-relations-column)
+         (l (length (string-join (seq-map #'cdr relations) " ")))
+         (extra-space (if (< l cl)
+                          (make-string (- cl l) ? )
+                        "")))
+    (concat (string-join (seq-map (lambda (x)
+                                    (org-make-link-string (car x) (cdr x)))
+                                  relations)
+                         " ")
+            extra-space)))
 
 (provide 'orgability)
 
