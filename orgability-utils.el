@@ -9,7 +9,7 @@
 ;; Keywords: org-mode
 ;; Homepage: https://github.com/d12frosted/orgability
 
-;; Package-Version: 0.0.1
+;; Package-Version: 0.1.1
 ;; Package-Requires: ((org-mode "9.1.0"))
 
 ;; This file is not part of GNU Emacs.
