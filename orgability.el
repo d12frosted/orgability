@@ -147,7 +147,9 @@ directories.")
       (orgability--with-entry
        (orgability-brain-add-relation (org-id-get-create) entry)
        (orgability--add-relation (orgability-brain-get-link entry)
-                                 (org-brain-title entry))))))
+                                 (org-brain-title entry)))
+      (ignore-errors
+        (org-agenda-redo)))))
 
 ;;;###autoload
 (defun orgability-delete-relation ()
@@ -169,7 +171,9 @@ reading list entry is also removed."
     (orgability-brain-delete-relation id (orgability--unwrap-link link))
     (orgability--with-entry
      (orgability-goto-relations-block)
-     (orgability--remove-till (concat "^.*" link ".*$") ":END:"))))
+     (orgability--remove-till (concat "^.*" link ".*$") ":END:"))
+    (ignore-errors
+      (org-agenda-redo))))
 
 (defun orgability--has-relation (link)
   "Returns non-nil if entry at point has a relation with LINK."
