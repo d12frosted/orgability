@@ -65,9 +65,6 @@ directories.")
   'org-cliplink-retrieve-title-synchronously
   "Function to extract title from http URL.")
 
-(defconst orgability-relations-start-re "^[ \t]*:RELATIONS:[ \t]*$"
-  "Regular expression matching the first line of a relations drawer.")
-
 (defun orgability-create-file (file)
   "Create an orgability FILE if it doesn't exist."
   (unless (file-exists-p file)
@@ -141,15 +138,19 @@ directories.")
 (defun orgability-add-relation ()
   "Add two-way relation with `org-brain' entry."
   (interactive)
-  (let* ((entry (orgability-brain-choose-entry))
-         (link (orgability-brain-get-link entry)))
-    (unless (orgability--has-relation link)
-      (orgability--with-entry
-       (orgability-brain-add-relation (org-id-get-create) entry)
-       (orgability--add-relation (orgability-brain-get-link entry)
-                                 (org-brain-title entry)))
-      (ignore-errors
-        (org-agenda-redo)))))
+  (orgability--with-entry
+   (let* ((entry (orgability-brain-choose-entry))
+          (link (orgability-brain-get-link entry))
+          (id (org-id-get-create)))
+     (unless (orgability--drawer-has-element "relations" link)
+       ;; TODO: make sure that it's not being double added
+       (orgability-brain-add-relation id entry)
+       (orgability--drawer-add-element
+        "relations"
+        (org-make-link-string (orgability-brain-get-link entry)
+                              (org-brain-title entry)))
+       (ignore-errors
+         (org-agenda-redo))))))
 
 ;;;###autoload
 (defun orgability-delete-relation ()
@@ -158,77 +159,26 @@ directories.")
 It works in a two-way fashion, meaning that the relation to
 reading list entry is also removed."
   (interactive)
-  (let* ((id (org-id-get-create))
-         (relations (orgability-list-relations))
-         (target (completing-read
-                  "Relation: "
-                  (mapcar #'cdr
-                          (orgability-list-relations))))
-         (link (car (find-if (lambda (x)
-                               (string-equal target
-                                             (cdr x)))
-                             relations))))
-    (orgability-brain-delete-relation id (orgability--unwrap-link link))
-    (orgability--with-entry
-     (orgability-goto-relations-block)
-     (orgability--remove-till (concat "^.*" link ".*$") ":END:"))
-    (ignore-errors
-      (org-agenda-redo))))
-
-(defun orgability--has-relation (link)
-  "Returns non-nil if entry at point has a relation with LINK."
-  (let ((result))
-    (orgability--with-entry
-     (orgability-goto-relations-block)
-     (while (not (looking-at-p ":END:"))
-       (forward-line 1)
-       (beginning-of-line)
-       (when (looking-at-p (concat "^.*" link ".*$"))
-         (setq result t))))
-    result))
-
-(defun orgability--add-relation (link title)
-  "Add relation for the entry at point."
-  (unless (orgability--has-relation link)
-    (orgability--with-entry
-     (orgability-goto-relations-block)
-     (newline-and-indent)
-     (insert (concat "- " (org-make-link-string link title))))))
-
-(defun orgability-goto-relations-block ()
-  "Move the point inside of relations block."
-  (goto-char (cdr (org-get-property-block)))
-  (forward-line 1)
-  (if (looking-at orgability-relations-start-re)
-      (end-of-line)
-    (progn
-      (open-line 1)
-      (indent-for-tab-command)
-      (insert ":RELATIONS:\n")
-      (indent-for-tab-command)
-      (insert ":END:")
-      (re-search-backward orgability-relations-start-re nil t)
-      (end-of-line))))
+  (orgability--with-entry
+   (let* ((id (org-id-get-create))
+          (relations (orgability-list-relations))
+          (target (completing-read
+                   "Relation: "
+                   (mapcar #'cdr relations)))
+          (link (car (find-if (lambda (x)
+                                (string-equal target
+                                              (cdr x)))
+                              relations))))
+     ;; TODO: use orgability--drawer-del-element for this
+     (orgability-brain-delete-relation id (orgability--unwrap-link link))
+     (orgability--drawer-del-element "relations" link)
+     (ignore-errors
+       (org-agenda-redo)))))
 
 (defun orgability-list-relations ()
   "Get the relations list of entry at point."
   (interactive)
-  (orgability--with-entry
-   (orgability-goto-relations-block)
-   (forward-line 1)
-   (beginning-of-line)
-   (let* ((data-raw (buffer-substring (point) (search-forward ":END:")))
-          (data (with-temp-buffer
-                  (insert data-raw)
-                  (org-element-parse-buffer))))
-     (delete-dups
-      (org-element-map data 'link
-        (lambda (link)
-          (cons (org-element-property :raw-link link)
-                (when-let ((desc (car (org-element-contents link))))
-                  (substring-no-properties (replace-regexp-in-string "[ \t\n\r]+" " " desc))
-                  )))
-        nil nil t)))))
+  (orgability--drawer-list-elements "relations" #'orgability--drawer-link-parser))
 
 (defvar orgability-agenda-relations-column 24
   "Width of relations block in `org-agenda'.")

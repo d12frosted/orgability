@@ -3,6 +3,8 @@
   =orgability-agenda-format-relations=.
 - Fix =orgability-add-relation= when used from agenda.
 - Automatically redo =org-agenda= after relations manipulations.
+- Generalize drawers helpers (they can be used outside of orgability and
+  probably will be moved to vulpea at some point of time).
 
 * ~v0.1.0~
 Initial release.
