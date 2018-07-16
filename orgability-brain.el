@@ -50,12 +50,12 @@
           (or (re-search-forward (concat "^\\(" org-outline-regexp "\\)") nil t)
               (goto-char (point-max)))
           (when (re-search-backward org-brain-resources-start-re nil t)
-            (orgability-remove-till (concat "^.*" orgability-id ".*$") ":END:")))
+            (orgability--remove-till (concat "^.*" orgability-id ".*$") ":END:")))
       (org-with-point-at (org-brain-entry-marker entry)
         (goto-char (cdr (org-get-property-block)))
         (forward-line 1)
         (when (looking-at org-brain-resources-start-re)
-          (orgability-remove-till (concat "^.*" orgability-id ".*$") ":END:"))))))
+          (orgability--remove-till (concat "^.*" orgability-id ".*$") ":END:"))))))
 
 (defun orgability-brain-get-link (brain-entry)
   "Get link to BRAIN-ENTRY."
