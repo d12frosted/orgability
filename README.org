@@ -1,7 +1,7 @@
 * =orgability=
 Orgability is a reading list manager with offline access support. Orgability
-lets you to easily create relations between reading list entries and =org-brain=
-entries.
+lets you to easily create topics between reading list entries and =org-brain=
+entries by adding topics to reading entries.
 
 ** Installation
 This package requires Emacs 25.1 or higher.
@@ -18,6 +18,11 @@ this package in your =init.el= file:
 #+END_SRC
 
 ** Usage
+*** Relations
+There are several relations that one can create between different entries.
+- =topic <-> resource= relation, where =org-brain= entry is a topic for reading
+  list entry and reading list entry is a resource for =org-brain= entry.
+
 *** Commands
 - =orgability-clip=: Stores an URL from the clipboard to the =orgability-file=.
   - The title is fetched using =org-cliplink=.
@@ -26,24 +31,25 @@ this package in your =init.el= file:
 - =orgability-store-url=: The same as =orgability-clip=, but asks for an URL.
 - =orgability-open=: Opens archive using =org-board= in the
   =org-board-default-browser=.
-- =orgability-add-relation=: Asks for a =org-brain= entry and creates a two-way
-  relation between reading list entry at the point and selected =org-brain=
-  entry.
-- =orgability-delete-relation=: Removes relation between =org-brain= entry and
-  reading list entry in a two-way fashion. That's why you should not manually
-  remove relations from =orgability-file=.
+- =orgability-add-topic=: Asks for a =org-brain= entry and creates a =topic <->
+  resource= relation between reading list entry at the point and selected
+  =org-brain= entry. Reading list entry is resource of =org-brain= entry and
+  =org-brain= entry is a topic of reading list entry.
+- =orgability-delete-topic=: Removes =topic <-> resource= relation between
+  =org-brain= entry and reading list entry in a two-way fashion. That's why you
+  should not manually remove topics from =orgability-file=.
 
 *** Viewing reading list
 Currently, =orgability= doesn't expose any special functionality to view all
 your reading list, but you can use =org-agenda= for this purpose. There is a
-function =orgability-agenda-format-relations= that can be used in
-=org-agenda-prefix-format= to insert relations.
+function =orgability-agenda-format-topics= that can be used in
+=org-agenda-prefix-format= to insert topics.
 
 #+BEGIN_SRC emacs-lisp
   ("r" "Reading List" tags-todo "READING"
    ((org-agenda-overriding-header "Reading List")
     (org-agenda-remove-tags t)
-    (org-agenda-prefix-format '((tags . "%(orgability-agenda-format-relations)")))
+    (org-agenda-prefix-format '((tags . "%(orgability-agenda-format-topics)")))
     (org-agenda-sorting-strategy '(todo-state-down effort-up category-keep))))
 #+END_SRC
 
@@ -69,7 +75,7 @@ function =orgability-agenda-format-relations= that can be used in
   By default it's =org-cliplink-retrieve-title-synchronously= from a
   =org-cliplink= package. This variable allows you to choose your own
   implementation.
-- =orgability-agenda-relations-column=: Width of relations block in
+- =orgability-agenda-topics-column=: Width of topics block in
   =org-agenda=.
 
 ** Special thanks

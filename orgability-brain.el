@@ -29,15 +29,15 @@
    "Entry: " (append (org-brain-files t)
                      (org-brain-headline-entries))))
 
-(defun orgability-brain-add-relation (orgability-id brain-entry)
-  "Add relation from BRAIN-ENTRY to ORGABILITY-ID"
+(defun orgability-brain-add-resource (orgability-id brain-entry)
+  "Add ORGABILITY-ID as resource of BRAIN-ENTRY."
   (org-brain-add-resource (concat "id:" orgability-id)
                           (org-entry-get nil "ITEM")
                           nil
                           brain-entry))
 
-(defun orgability-brain-delete-relation (orgability-id brain-id)
-  "Delete relation from BRAIN-ID to ORGABILITY-ID"
+(defun orgability-brain-delete-resource (orgability-id brain-id)
+  "Delete ORGABILITY-ID from BRAIN-ID resources."
   (when (null orgability-id)
     (error "orgability-id can't be null"))
   (when (null brain-id)

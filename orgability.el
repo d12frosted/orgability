@@ -61,6 +61,8 @@ directories.")
 (defconst orgability-file-tags "reading"
   "Tags of `orgability-file' entries.")
 
+(defconst orgability-topics-drawer "topics")
+
 (defvar orgability-extract-http-title-f
   'org-cliplink-retrieve-title-synchronously
   "Function to extract title from http URL.")
@@ -135,65 +137,70 @@ directories.")
           (org-agenda-redo))))))
 
 ;;;###autoload
-(defun orgability-add-relation ()
-  "Add two-way relation with `org-brain' entry."
+(defun orgability-add-topic ()
+  "Add an `org-brain' topic to reading entry under point.
+
+It works in a two-way fashion, meaning that the reading entry is
+added as a resource to topic."
   (interactive)
   (orgability--with-entry
    (let* ((entry (orgability-brain-choose-entry))
           (link (orgability-brain-get-link entry))
           (id (org-id-get-create)))
-     (unless (orgability--drawer-has-element "relations" link)
+     (unless (orgability--drawer-has-element orgability-topics-drawer link)
        ;; TODO: make sure that it's not being double added
-       (orgability-brain-add-relation id entry)
+       (orgability-brain-add-resource id entry)
        (orgability--drawer-add-element
-        "relations"
+        orgability-topics-drawer
         (org-make-link-string (orgability-brain-get-link entry)
                               (org-brain-title entry)))
        (ignore-errors
          (org-agenda-redo))))))
 
 ;;;###autoload
-(defun orgability-delete-relation ()
-  "Select and delete relation for the entry at point.
+(defun orgability-delete-topic ()
+  "Select and delete topic for the entry at point.
 
-It works in a two-way fashion, meaning that the relation to
-reading list entry is also removed."
+It works in a two-way fashion, meaning that the reading entry is
+remove from resources of the topic."
   (interactive)
   (orgability--with-entry
    (let* ((id (org-id-get-create))
-          (relations (orgability-list-relations))
+          (topics (orgability-list-topics))
           (target (completing-read
-                   "Relation: "
-                   (mapcar #'cdr relations)))
+                   "Topic: "
+                   (mapcar #'cdr topics)))
           (link (car (find-if (lambda (x)
                                 (string-equal target
                                               (cdr x)))
-                              relations))))
+                              topics))))
      ;; TODO: use orgability--drawer-del-element for this
-     (orgability-brain-delete-relation id (orgability--unwrap-link link))
-     (orgability--drawer-del-element "relations" link)
+     (orgability-brain-delete-resource id (orgability--unwrap-link link))
+     (orgability--drawer-del-element orgability-topics-drawer link)
      (ignore-errors
        (org-agenda-redo)))))
 
-(defun orgability-list-relations ()
-  "Get the relations list of entry at point."
+(defun orgability-list-topics ()
+  "Get the topics list of entry at point."
   (interactive)
-  (orgability--drawer-list-elements "relations" #'orgability--drawer-link-parser))
+  (orgability--drawer-list-elements
+   orgability-topics-drawer
+   #'orgability--drawer-link-parser))
 
-(defvar orgability-agenda-relations-column 24
-  "Width of relations block in `org-agenda'.")
+(defvar orgability-agenda-topics-column 24
+  "Width of topics block in `org-agenda'.")
 
-(defun orgability-agenda-list-relations ()
-  "Returns string with relations to be inserted to `org-agenda'."
-  (let* ((relations (orgability-list-relations))
-         (cl orgability-agenda-relations-column)
-         (l (length (string-join (seq-map #'cdr relations) " ")))
+(defun orgability-agenda-list-topics ()
+  "Returns string with topics to be inserted to `org-agenda'."
+  (let* ((topics (orgability-list-topics))
+         (cl orgability-agenda-topics-column)
+         (l (length (string-join (seq-map #'cdr topics) " ")))
          (extra-space (if (< l cl)
                           (make-string (- cl l) ? )
                         "")))
     (concat (string-join (seq-map (lambda (x)
                                     (org-make-link-string (car x) (cdr x)))
-                                  relations)
+                                  topics)
                          " ")
             extra-space)))
 
