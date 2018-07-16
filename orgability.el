@@ -153,9 +153,9 @@ added as a resource to topic."
        (orgability--drawer-add-element
         orgability-topics-drawer
         (org-make-link-string (orgability-brain-get-link entry)
-                              (org-brain-title entry)))
-       (ignore-errors
-         (org-agenda-redo))))))
+                              (org-brain-title entry))))))
+  (ignore-errors
+    (org-agenda-redo)))
 
 ;;;###autoload
 (defun orgability-delete-topic ()
@@ -176,9 +176,9 @@ remove from resources of the topic."
                               topics))))
      ;; TODO: use orgability--drawer-del-element for this
      (orgability-brain-delete-resource id (orgability--unwrap-link link))
-     (orgability--drawer-del-element orgability-topics-drawer link)
-     (ignore-errors
-       (org-agenda-redo)))))
+     (orgability--drawer-del-element orgability-topics-drawer link)))
+  (ignore-errors
+    (org-agenda-redo)))
 
 (defun orgability-list-topics ()
   "Get the topics list of entry at point."
