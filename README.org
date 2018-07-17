@@ -78,6 +78,26 @@ function =orgability-agenda-format-topics= that can be used in
 - =orgability-agenda-topics-column=: Width of topics block in
   =org-agenda=.
 
+** Running tests
+Ideally, you should use [[http://cask.readthedocs.io/en/latest/][Cask]] for running tests. On macOS one can install it
+using following brew:
+
+#+BEGIN_SRC bash
+$ brew install cask [--ignore-dependencies]
+#+END_SRC
+
+After that you need to setup cask:
+
+#+BEGIN_SRC bash
+$ cask install
+#+END_SRC
+
+And now you are ready to run tests:
+
+#+BEGIN_SRC bash
+$ cask exec ert-runner
+#+END_SRC
+
 ** Special thanks
 Special thanks to creators and maintainers of =org-mode=, =org-cliplink=,
 =org-brain= and =org-board=. And to all the Emacs community.
