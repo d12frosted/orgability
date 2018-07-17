@@ -38,10 +38,9 @@ return nil."
      (let* ((drawer-beg-regexp (concat "^[ \t]*:" name ":[ \t]*$"))
             (drawer-end-regexp "^[ \t]*:END:[ \t]*$")
             (bound (save-excursion
-                     (if (search-forward-regexp org-heading-regexp)
-                         (beginning-of-line)
-                       (end-of-buffer))
-                     (point)))
+                     (if (search-forward-regexp org-heading-regexp nil t)
+                         (line-beginning-position)
+                       (buffer-end 1))))
             (beg)
             (end))
        (when (search-forward-regexp drawer-beg-regexp bound t)
