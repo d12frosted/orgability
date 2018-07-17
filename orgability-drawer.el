@@ -62,7 +62,7 @@ return nil."
            (insert ":" name ":\n")
            (indent-for-tab-command)
            (insert ":END:")
-           (orgability--drawer-block name nil)))))))
+           (orgability--drawer-block name nil inside)))))))
 
 (defun orgability--drawer-list-elements (name &optional parser prefix)
   "Get the content of NAME drawer as a list."
