@@ -26,6 +26,7 @@
 (require 'org-board)
 
 (require 'orgability-utils)
+(require 'orgability-drawer)
 (require 'orgability-brain)
 
 (defvar orgability-file (concat user-home-directory "orgability.org")
