@@ -7,6 +7,7 @@
   probably will be moved to vulpea at some point of time).
 - *Breaking change:* rename relations to topics.
 - Introduce tests.
+- Ask user for a title if it can't be retrieved from the web page itself.
 
 * ~v0.1.0~
 Initial release.

@@ -99,6 +99,10 @@ directories.")
 
 (defun orgability-add-entry (title url &optional props)
   "Add read entry with TITLE and URL and optional PROPS."
+  (unless title
+    (setq title (read-string "Title: ")))
+  (unless url
+    (user-error "title is nil"))
   (unless orgability-file
     (user-error "`orgability-file' is not set"))
   (orgability-create-file orgability-file)
