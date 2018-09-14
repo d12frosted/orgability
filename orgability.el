@@ -192,6 +192,12 @@ remove from resources of the topic."
    orgability-topics-drawer
    #'orgability--drawer-link-parser))
 
+(defvar orgability-agenda-relations-make-links nil
+  "If non-nil, relations will be inserted as links in agenda.")
+
+(defvar orgability-agenda-relations-separator " | "
+  "Separator between relations in agenda.")
+
 (defvar orgability-agenda-topics-column 24
   "Width of topics block in `org-agenda'.")
 
@@ -199,15 +205,21 @@ remove from resources of the topic."
   "Returns string with topics to be inserted to `org-agenda'."
   (let* ((topics (orgability-list-topics))
          (cl orgability-agenda-topics-column)
-         (l (length (string-join (seq-map #'cdr topics) " ")))
-         (extra-space (if (< l cl)
-                          (make-string (- cl l) ? )
-                        "")))
-    (concat (string-join (seq-map (lambda (x)
-                                    (org-make-link-string (car x) (cdr x)))
-                                  topics)
-                         " ")
-            extra-space)))
+         (l (length
+             (string-join
+              (seq-map #'cdr topics)
+              orgability-agenda-relations-separator)))
+         (extra-space (make-string (max 1 (- cl l)) ? )))
+    (concat
+     (string-join
+      (seq-map
+       (lambda (x)
+         (if orgability-agenda-relations-make-links
+             (org-make-link-string (car x) (cdr x))
+           (cdr x)))
+       topics)
+      orgability-agenda-relations-separator)
+     extra-space)))
 
 (provide 'orgability)
 
