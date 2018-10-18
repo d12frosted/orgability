@@ -101,6 +101,27 @@ And now you are ready to run tests:
 $ cask exec ert-runner
 #+END_SRC
 
+** Testing
+
+First you need to install =cask=. If you are using [[https://github.com/d12frosted/homebrew-emacs-plus][emacs-plus]], then you need to
+ignore dependencies during =cask= installation.
+
+#+BEGIN_SRC bash
+  $ brew install cask --ignore-dependencies
+#+END_SRC
+
+One you have =cask=, you need to install all dependencies.
+
+#+BEGIN_SRC bash
+  $ cask install
+#+END_SRC
+
+Now you can run tests.
+
+#+BEGIN_SRC bash
+  $ cask exec ert-runner
+#+END_SRC
+
 ** Special thanks
 Special thanks to creators and maintainers of =org-mode=, =org-cliplink=,
 =org-brain= and =org-board=. And to all the Emacs community.
