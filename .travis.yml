@@ -9,8 +9,6 @@ install:
   - curl -fsSkL https://raw.github.com/cask/cask/master/go | python
   - cask
 env:
-  - EVM_EMACS=emacs-25.1-travis
-  - EVM_EMACS=emacs-25.2-travis
-  - EVM_EMACS=emacs-25.3-travis
+  - EVM_EMACS=emacs-26.1-travis
 script:
   - cask exec ert-runner || exit 1

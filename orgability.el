@@ -10,7 +10,7 @@
 ;; Homepage: https://github.com/d12frosted/orgability
 
 ;; Package-Version: 0.2.0
-;; Package-Requires: ((org "9.1.0") (org-cliplink "0.2") (org-board "1136") (org-brain "0.5") (org-drawer-list "0.0.1"))
+;; Package-Requires: ((emacs "26.1") (org "9.1.0") (org-cliplink "0.2") (org-board "1136") (org-brain "0.5") (org-drawer-list "0.0.1"))
 
 ;; This file is not part of GNU Emacs.
 ;;; License: GPLv3
