@@ -57,6 +57,25 @@
               :from-end t
               :initial-value (apply (car (last lex-funs)) args)))))
 
+(defun orgability--link-url-parser (link)
+  "Parse title from an org LINK."
+  (replace-regexp-in-string "\\[\\[\\(.*\\)\\]\\[.*\\]\\]" "\\1" link))
+
+(defun orgability--link-title-parser (link)
+  "Parse title from an org LINK."
+  (replace-regexp-in-string "\\[\\[.*\\]\\[\\(.*\\)\\]\\]" "\\1" link))
+
+(defun orgability--link-parser (link)
+  "Parse (url . title) from an org LINK."
+  (cons
+   (orgability--link-url-parser link)
+   (orgability--link-title-parser link)))
+
+(defun orgability--link-p (url content)
+  "Returns non-nil when CONTENT is a link to URL."
+  (or (string-equal content url)
+      (string-match-p (concat "\\[\\[" url "\\]\\[.*\\]\\]") content)))
+
 (provide 'orgability-utils)
 
 ;;; orgability-utils.el ends here

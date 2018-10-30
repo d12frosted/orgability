@@ -7,26 +7,32 @@ lets you to easily create topics between reading list entries and =org-brain=
 entries by adding topics to reading entries.
 
 ** Installation
+
 This package requires Emacs 25.1 or higher.
 
 *** MELPA
+
 This package is not yet available on MELPA.
 
 *** Manual
-Install =org-mode=, =org-cliplink=, =org-board= and =org-brain= and then require
-this package in your =init.el= file:
+
+Install =org-mode=, =org-cliplink=, =org-board=, =org-brain=, =org-drawer-list=
+and then require this package in your =init.el= file:
 
 #+BEGIN_SRC emacs-lisp
   (require 'orgability)
 #+END_SRC
 
 ** Usage
+
 *** Relations
+
 There are several relations that one can create between different entries.
 - =topic <-> resource= relation, where =org-brain= entry is a topic for reading
   list entry and reading list entry is a resource for =org-brain= entry.
 
 *** Commands
+
 - =orgability-clip=: Stores an URL from the clipboard to the =orgability-file=.
   - The title is fetched using =org-cliplink=.
   - When =orgability-auto-archive= is non-nil the URL is archived using
@@ -43,6 +49,7 @@ There are several relations that one can create between different entries.
   should not manually remove topics from =orgability-file=.
 
 *** Viewing reading list
+
 Currently, =orgability= doesn't expose any special functionality to view all
 your reading list, but you can use =org-agenda= for this purpose. There is a
 function =orgability-agenda-format-topics= that can be used in
@@ -57,6 +64,7 @@ function =orgability-agenda-format-topics= that can be used in
 #+END_SRC
 
 *** Configurations
+
 - =orgability-file=: File with reading list entries.
 - =orgability-add-to-top=: If non-nil, entries are added to the top of the
   =orgability-file=.
@@ -104,9 +112,11 @@ Now you can run tests.
 #+END_SRC
 
 ** Special thanks
+
 Special thanks to creators and maintainers of =org-mode=, =org-cliplink=,
 =org-brain= and =org-board=. And to all the Emacs community.
 
 ** Contributing
+
 Don't hesitate to ask questions, to report bugs or suggest new features. And
 most importantly, PRs are welcome!

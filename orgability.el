@@ -10,7 +10,7 @@
 ;; Homepage: https://github.com/d12frosted/orgability
 
 ;; Package-Version: 0.2.0
-;; Package-Requires: ((org "9.1.0") (org-cliplink "0.2") (org-board "1136") (org-brain "0.5"))
+;; Package-Requires: ((org "9.1.0") (org-cliplink "0.2") (org-board "1136") (org-brain "0.5") (org-drawer-list "0.0.1"))
 
 ;; This file is not part of GNU Emacs.
 ;;; License: GPLv3
@@ -26,7 +26,6 @@
 (require 'org-board)
 
 (require 'orgability-utils)
-(require 'orgability-drawer)
 (require 'orgability-brain)
 
 (defvar orgability-file (concat user-home-directory "orgability.org")
@@ -152,10 +151,10 @@ added as a resource to topic."
    (let* ((entry (orgability-brain-choose-entry))
           (link (orgability-brain-get-link entry))
           (id (org-id-get-create)))
-     (unless (orgability--drawer-has-element orgability-topics-drawer link)
+     (unless (org-drawer-list-contains orgability-topics-drawer link #'orgability--link-p)
        ;; TODO: make sure that it's not being double added
        (orgability-brain-add-resource id entry)
-       (orgability--drawer-add-element
+       (org-drawer-list-add
         orgability-topics-drawer
         (org-make-link-string (orgability-brain-get-link entry)
                               (org-brain-title entry))))))
@@ -179,18 +178,20 @@ remove from resources of the topic."
                                 (string-equal target
                                               (cdr x)))
                               topics))))
-     ;; TODO: use orgability--drawer-del-element for this
+     ;; TODO: use `org-drawer-list-remove' for this
      (orgability-brain-delete-resource id (orgability--unwrap-link link))
-     (orgability--drawer-del-element orgability-topics-drawer link)))
+     (org-drawer-list-remove
+      orgability-topics-drawer
+      link
+      #'orgability--link-p)))
   (ignore-errors
     (org-agenda-redo)))
 
 (defun orgability-list-topics ()
   "Get the topics list of entry at point."
   (interactive)
-  (orgability--drawer-list-elements
-   orgability-topics-drawer
-   #'orgability--drawer-link-parser))
+  (seq-map #'orgability--link-parser
+           (org-drawer-list orgability-topics-drawer)))
 
 (defvar orgability-agenda-relations-make-links nil
   "If non-nil, relations will be inserted as links in agenda.")
