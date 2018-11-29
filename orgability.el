@@ -101,7 +101,7 @@ directories.")
   (unless title
     (setq title (read-string "Title: ")))
   (unless url
-    (user-error "title is nil"))
+    (user-error "Title is nil"))
   (unless orgability-file
     (user-error "`orgability-file' is not set"))
   (orgability-create-file orgability-file)
@@ -205,7 +205,7 @@ remove from resources of the topic."
 
 ;;;###autoload
 (defun orgability-agenda-list-topics ()
-  "Returns string with topics to be inserted to `org-agenda'."
+  "Return string with topics to be inserted to `org-agenda'."
   (let* ((topics (orgability-list-topics))
          (cl orgability-agenda-topics-column)
          (l (length
