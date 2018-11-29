@@ -202,6 +202,7 @@ remove from resources of the topic."
 (defvar orgability-agenda-topics-column 24
   "Width of topics block in `org-agenda'.")
 
+;;;###autoload
 (defun orgability-agenda-list-topics ()
   "Returns string with topics to be inserted to `org-agenda'."
   (let* ((topics (orgability-list-topics))
