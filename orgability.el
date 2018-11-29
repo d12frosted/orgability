@@ -187,6 +187,7 @@ remove from resources of the topic."
   (ignore-errors
     (org-agenda-redo)))
 
+;;;###autoload
 (defun orgability-list-topics ()
   "Get the topics list of entry at point."
   (interactive)
