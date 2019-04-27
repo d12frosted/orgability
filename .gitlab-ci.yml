@@ -1,0 +1,27 @@
+stages:
+  - test
+
+.test_template: &test_definition
+  stage: test
+  script:
+    - emacs --version | tee .emacsversion
+    - cask install
+    - cask exec ert-runner
+
+test_emacs_26_1:
+  <<: *test_definition
+  environment:
+    name: Emacs 26.1
+  image: silex/emacs:26.1-dev
+
+test_emacs_26_2:
+  <<: *test_definition
+  environment:
+    name: Emacs 26.2
+  image: silex/emacs:26.2-dev
+
+test_emacs_head:
+  <<: *test_definition
+  environment:
+    name: Emacs HEAD
+  image: silex/emacs:master-dev
