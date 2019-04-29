@@ -118,5 +118,16 @@ Special thanks to creators and maintainers of =org-mode=, =org-cliplink=,
 
 ** Contributing
 
-Don't hesitate to ask questions, to report bugs or suggest new features. And
-most importantly, PRs are welcome!
+Everyone is welcome to contribute to =orgability= project. Feature requests,
+proposals, issue reports, documentation improvements, code patches - just to
+name few things that the project can gain from.
+
+Please note that the main upstream of =orgability= is located on [[https://gitlab.com/d12frosted/orgability][GitLab]], and
+it's advisable to send your contributions there. But they can be accepted also
+via [[mailto:boris@d12frosted.io][email]] and [[https://github.com/d12frosted/orgability][GitHub]].
+
+This project has automated tests that are run on [[https://gitlab.com/d12frosted/orgability][GitLab]]. If you are contributing
+outside of GitLab, please run the tests manually. For more information please
+refer to relevant section in readme file or contact me via email.
+
+Happy hacking!
